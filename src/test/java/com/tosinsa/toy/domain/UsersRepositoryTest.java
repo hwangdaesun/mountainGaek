@@ -1,13 +1,9 @@
-package com.tosinsa.toy.repository;
-
-import com.tosinsa.toy.domain.UsersRepository;
-import com.tosinsa.toy.domain.Users;
+package com.tosinsa.toy.domain;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.*;
-
 import java.time.LocalDateTime;
 import java.util.Optional;
 
@@ -21,7 +17,7 @@ class UsersRepositoryTest {
 
     @Test
     void save(){
-        usersRepository.save(new Users("대선","eotjs@naver.com"));
+        Users save = usersRepository.save(new Users("대선", "eotjs@naver.com", new Address("서울", "별로", "9944")));
 
         Users users = usersRepository.findById(1L).orElseThrow(RuntimeException::new);
 
@@ -67,15 +63,6 @@ class UsersRepositoryTest {
         System.out.println(usersRepository.findById(1L));
     }
 
-    @Test
-    void 유저_한번에_저장(){
-        Users users1 = new Users("aaa","aaa@naver.com", LocalDateTime.now(),LocalDateTime.now());
-        Users users2 = new Users("bbb", "bbb@naver.com",LocalDateTime.now(),LocalDateTime.now());
-
-        usersRepository.saveAll(Lists.newArrayList(users1,users2));
-
-        usersRepository.findAll().forEach(System.out::println);
-    }
 
     @Test
     void getOne_vs_findById(){
@@ -127,7 +114,7 @@ class UsersRepositoryTest {
                 .withIgnorePaths("name")
                 .withMatcher("email",endsWith());
 
-        Example<Users> example = Example.of(new Users("jack","naver.com"),matcher);
+        Example<Users> example = Example.of(new Users("jack","naver.com",new Address("서울","응담로","0304")),matcher);
 
         usersRepository.findAll(example).forEach(System.out::println);
     }

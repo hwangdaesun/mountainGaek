@@ -1,27 +1,25 @@
 package com.tosinsa.toy.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+
 @Getter
 @Entity(name = "USERS")
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
 public class Users {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
+    @Column(name = "users_id")
     private Long id;
 
     @Column
-    private String usersId;
+    private String loginId;
 
     @Column
-    private String usersPassWord;
+    private String loginPassWord;
 
     @Column
     private String name;
@@ -30,25 +28,35 @@ public class Users {
     private String email;
 
     @Column
-    private LocalDateTime createdAt; // jpa 도메인 객체에는 일반적으로 포함됨.
+    private Instant createdAt; // jpa 도메인 객체에는 일반적으로 포함됨.
 
     @Column
-    private LocalDateTime updatedAt; // jpa 도메인 객체에는 일반적으로 포함됨. -> 이력 관리
+    private Instant updatedAt; // jpa 도메인 객체에는 일반적으로 포함됨. -> 이력 관리
 
-
+    @Embedded
+    private Address address;
 
     @Builder
-    public Users(String name, String email, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Users(String name, String email, Address address) {
         this.name = name;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.address = address;
     }
 
+    public static Users createUsers(String name, String email, Address address){
+        Users users = new Users(name, email, address);
+        return users;
+    }
 
-    public Users(String name, String email) {
-        this.name = name;
-        this.email = email;
+    @PrePersist
+    public void prePersist(){
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void preUpdate(){
+        this.updatedAt = Instant.now();
     }
 
     public void updateEmail(String email){
