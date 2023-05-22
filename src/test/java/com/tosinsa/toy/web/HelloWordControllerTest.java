@@ -1,4 +1,4 @@
-package com.tosinsa.toy.controller;
+package com.tosinsa.toy.web;
 
 
 import org.junit.jupiter.api.Test;

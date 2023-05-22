@@ -7,5 +7,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
-
+  thymeleaf:
+    prefix : classpath:/templates/
+    suffix : .html
