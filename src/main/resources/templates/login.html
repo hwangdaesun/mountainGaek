@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <title>Hello</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="jumbotron">
+    <div class="jumbotron">
+        <h1>산행객</h1>
+        <p class="lead">회원 가입</p>
+        <p>
+            <a class="btn btn-lg btn-secondary" th:href="@{/members/new}">회원 가입</a>
+        </p>
+        <p class="lead">로그인</p>
+        <p>
+            <a class="btn btn-lg btn-dark" th:href="@{/login}">로그인</a>
+        </p>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>
