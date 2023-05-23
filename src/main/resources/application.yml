@@ -1,4 +1,8 @@
 spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled=true
   h2:
     console:
       enabled: true
@@ -10,3 +14,5 @@ spring:
   thymeleaf:
     prefix : classpath:/templates/
     suffix : .html
+
+
