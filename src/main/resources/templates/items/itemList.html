@@ -12,7 +12,7 @@
                 <th>상품명</th>
                 <th>가격</th>
                 <th>재고수량</th>
-                <th>장바구니</th>
+                <th>구매</th>
                 <th></th>
             </tr>
             </thead>
@@ -24,8 +24,8 @@
                 <td th:text="${item.stockQuantity}"></td>
 
                 <td>
-                    <a th:href="@{/items/{id} (id=${item.id})}"
-                       class="btn btn-primary" role="button">수정</a>
+                    <a th:href="@{/order/items/{itemId} (itemId=${item.id})}"
+                       class="btn btn-primary" role="button">주문 하기</a>
                 </td>
             </tr>
             </tbody>

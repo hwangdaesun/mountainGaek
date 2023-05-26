@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class HomeController {
+public class LoginController {
 
     private final LoginService loginService;
 
@@ -35,13 +35,7 @@ public class HomeController {
 
         //세션이 유지되면 로그인으로 이동
         model.addAttribute("member", loginMember);
-        return "home";
-    }
-
-    @GetMapping("/home")
-    public String main()
-    {
-        return "home";
+        return "redirect:/items";
     }
 
     @GetMapping("/login")
@@ -52,13 +46,13 @@ public class HomeController {
     }
 
     @PostMapping("/login")
-    public String verify(@Valid LoginForm form, BindingResult bindingResult, HttpServletRequest request){
+    public String verify(@Valid LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request){
 
         if (bindingResult.hasErrors()){
             return "loginForm";
         }
 
-        Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
+        Member loginMember = loginService.login(loginForm);
 
         if (loginMember == null){
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
@@ -71,8 +65,9 @@ public class HomeController {
         HttpSession session = request.getSession();
 
         //세션에 로그인 회원 정보 보관
-        session.setAttribute(SessionConst.LOGIN_USER, loginMember);
-        return "redirect:/home";
+
+        session.setAttribute(SessionConst.LOGIN_USER, loginMember.getId());
+        return "redirect:/items";
     }
 
     @RequestMapping("/logout")
@@ -84,7 +79,7 @@ public class HomeController {
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/";
+        return "redirect:/items";
     }
 
 }

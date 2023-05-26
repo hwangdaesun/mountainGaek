@@ -18,12 +18,6 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping("/items/new")
-    public String createForm(Model model){
-        model.addAttribute("form", new ItemForm());
-        return "items/createItemForm";
-    }
-
     @PostMapping("/items")
     public String create(ItemForm itemForm){
         itemService.saveItem(itemForm);
@@ -38,15 +32,15 @@ public class ItemController {
     }
 
     @GetMapping("items/{itemId}")
-    public String updateItemForm(@PathVariable("itemId") Long itemId, Model model){
+    public String readItem(@PathVariable("itemId") Long itemId, Model model){
         Item item = itemService.findOne(itemId);
-        ItemForm form = new ItemForm();
-        form.setItemId(item.getId());
-        form.setName(item.getName());
-        form.setPrice(item.getPrice());
-        form.setStockQuantity(item.getStockQuantity());
-        model.addAttribute("form", form);
-        return "items/updateItemForm";
+        ItemForm itemForm = new ItemForm();
+        itemForm.setItemId(item.getId());
+        itemForm.setName(item.getName());
+        itemForm.setPrice(item.getPrice());
+        itemForm.setStockQuantity(item.getStockQuantity());
+        model.addAttribute("itemForm", itemForm);
+        return "items/item";
     }
 
     @PutMapping ("items/{itemId}")
