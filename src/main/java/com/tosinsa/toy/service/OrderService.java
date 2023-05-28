@@ -57,5 +57,9 @@ public class OrderService {
         return orderRepository.findAllByString(orderSearch);
     }
 
+    public List<Order> findOrdersByMemberId(Long memberId){
+        return orderRepository.findByMemberId(memberId);
+    }
+
 
 }

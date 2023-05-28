@@ -25,6 +25,12 @@ public class OrderRepository {
         return em.find(Order.class, id);
     }
 
+    public List<Order> findByMemberId(Long memberId){
+        return em.createQuery("select o from Order o join o.member m where m.id = :memberId", Order.class)
+                .setParameter("memberId",memberId)
+                .getResultList();
+    }
+
     public List<Order> findAllByString(OrderSearch orderSearch) {
         //language=JPAQL
         String jpql = "select o From Order o join o.member m";
