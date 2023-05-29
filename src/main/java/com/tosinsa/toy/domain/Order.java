@@ -36,7 +36,7 @@ public class Order {
     //== 연관관계 메서드 ==//
     public void setMember(Member member){
         this.member = member; // User를 Order에 저장
-        member.getOrders().add(this); // Order를 User에 저장 // ex) order.setUser(user) 한 줄로 양쪽 모두 저장 가능
+        member.mappingOrder(this); // Order를 User에 저장 // ex) order.setUser(user) 한 줄로 양쪽 모두 저장 가능
     }
 
     public void addOrderItem(OrderItem orderItem){
