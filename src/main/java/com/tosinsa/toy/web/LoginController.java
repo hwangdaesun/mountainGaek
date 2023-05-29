@@ -26,7 +26,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @GetMapping("/")
-    public String login(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginMember, Model model){
+    public String home(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginMember, Model model){
 
         //세션에 회원 데이터가 없으면 home
         if (loginMember == null) {
@@ -41,12 +41,11 @@ public class LoginController {
     @GetMapping("/login")
     public String loginForm(Model model){
         model.addAttribute("loginForm", new LoginForm());
-        log.info("login!!");
         return "loginForm";
     }
 
     @PostMapping("/login")
-    public String verify(@Valid LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request){
+    public String login(@Valid LoginForm loginForm, BindingResult bindingResult, HttpServletRequest request){
 
         if (bindingResult.hasErrors()){
             return "loginForm";
@@ -56,6 +55,7 @@ public class LoginController {
 
         if (loginMember == null){
             bindingResult.reject("loginFail", "아이디 또는 비밀번호가 맞지 않습니다.");
+            log.debug("debug={} ", bindingResult);
             return "loginForm";
         }
 
@@ -65,8 +65,8 @@ public class LoginController {
         HttpSession session = request.getSession();
 
         //세션에 로그인 회원 정보 보관
-
         session.setAttribute(SessionConst.LOGIN_USER, loginMember.getId());
+        log.debug("debug={}",loginMember);
         return "redirect:/items";
     }
 

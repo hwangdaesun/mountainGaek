@@ -1,5 +1,6 @@
 package com.tosinsa.toy.web;
 
+import com.tosinsa.toy.SessionConst;
 import com.tosinsa.toy.domain.Item;
 import com.tosinsa.toy.domain.Member;
 import com.tosinsa.toy.domain.Order;
@@ -7,6 +8,8 @@ import com.tosinsa.toy.domain.OrderSearch;
 import com.tosinsa.toy.service.ItemService;
 import com.tosinsa.toy.service.OrderService;
 import com.tosinsa.toy.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,36 +22,35 @@ import java.util.List;
 public class OrderController {
 
     private final OrderService orderService;
-    private final MemberService memberService;
     private final ItemService itemService;
 
-    @GetMapping("/order")
-    public String createForm(Model model) {
+    @GetMapping("/order/items/{itemId}")
+    public String createOrderForm(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginMember, @PathVariable("itemId") Long itemId, Model model) {
 
-        List<Member> members = memberService.findMembers();
-        List<Item> items = itemService.findItems();
-
-        model.addAttribute("members", members);
-        model.addAttribute("items",items);
+        Item item = itemService.findOne(itemId);
+        model.addAttribute("item",item);
+        model.addAttribute("member", loginMember);
+        OrderForm orderForm = new OrderForm();
+        orderForm.setItemId(itemId);
+        model.addAttribute("orderForm", orderForm);
 
         return "order/orderForm";
     }
 
     @PostMapping("/order")
-    public String order(@RequestParam("userId") Long userId,
-                        @RequestParam("itemId") Long itemId,
-                        @RequestParam("count") int count) {
+    public String order(OrderForm orderForm, HttpServletRequest request) {
 
-        orderService.order(userId, itemId, count);
-
+        HttpSession session = request.getSession();
+        Object memberId = session.getAttribute(SessionConst.LOGIN_USER);
+        orderService.order((Long)memberId, orderForm.getItemId(), orderForm.getCount());
+        // delivery 배송 준비 상태로 변경해야한다.
         return "redirect:/orders";
     }
 
     @GetMapping("/orders")
-    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model){
-        List<Order> orders = orderService.findOrders(orderSearch);
+    public String orderList(@SessionAttribute(name = SessionConst.LOGIN_USER, required = false) Member loginMember,Model model){
+        List<Order> orders = orderService.findOrdersByMemberId(loginMember.getId());
         model.addAttribute("orders", orders);
-
         return "order/orderList";
     }
 
