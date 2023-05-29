@@ -18,9 +18,10 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
     @Transactional
-    public void saveItem(ItemForm itemForm) {
+    public Long saveItem(ItemForm itemForm) {
         Item item = Item.createItem(itemForm.getName(), itemForm.getPrice(), itemForm.getStockQuantity());
-        itemRepository.save(item);
+        Item saveItem = itemRepository.save(item);
+        return saveItem.getId();
     }
 
     public List<Item> findItems() {
