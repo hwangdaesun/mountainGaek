@@ -4,16 +4,21 @@ import com.tosinsa.toy.domain.Member;
 import com.tosinsa.toy.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
 
 @Controller
+@Slf4j
 @RequiredArgsConstructor
 public class MemberController {
 
@@ -21,19 +26,18 @@ public class MemberController {
 
     @GetMapping("/members/new")
     public String createForm(Model model){
-        System.out.println("회원가입 Form");
         model.addAttribute("memberForm", new MemberForm());
         return "member/createMemberForm";
     }
 
     @PostMapping("/members/new")
-    public String create(@Valid MemberForm memberForm, BindingResult result){
+    public String create(@ModelAttribute @Validated MemberForm memberForm, BindingResult bindingResult){
 
-        if (result.hasErrors()){
+        if (bindingResult.hasErrors()){
             return "member/createMemberForm";
         }
         memberService.join(memberForm);
-        System.out.println("회원가입 성공");
+        log.info("create={} ", memberForm);
         return "redirect:/";
     }
 
