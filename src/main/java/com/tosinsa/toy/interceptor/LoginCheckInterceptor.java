@@ -18,7 +18,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         log.info("authorization check intercept start {}", requestURI);
 
         HttpSession session = request.getSession();
-        if (session == null || session.getAttribute(SessionConst.LOGIN_USER) == null){
+        if (session == null || (session.getAttribute(SessionConst.LOGIN_USER) == null && session.getAttribute(SessionConst.LOGIN_ADMINISTER) == null)){
             log.info("unauthorized user request");
             //로그인으로 redirect
             response.sendRedirect("/login?redirectURL=" + requestURI);
