@@ -1,5 +1,7 @@
-package com.tosinsa.toy.domain;
+package com.tosinsa.toy.domain.order;
 
+import com.tosinsa.toy.domain.OrderSearch;
+import com.tosinsa.toy.domain.order.Order;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;

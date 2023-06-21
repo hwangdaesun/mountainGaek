@@ -1,5 +1,6 @@
 package com.tosinsa.toy.domain;
 
+import com.tosinsa.toy.domain.order.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 

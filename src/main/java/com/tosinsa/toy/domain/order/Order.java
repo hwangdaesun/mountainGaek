@@ -1,5 +1,8 @@
-package com.tosinsa.toy.domain;
+package com.tosinsa.toy.domain.order;
 
+import com.tosinsa.toy.domain.member.Member;
+import com.tosinsa.toy.domain.OrderItem;
+import com.tosinsa.toy.domain.delivery.Delivery;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
