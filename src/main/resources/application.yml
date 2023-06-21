@@ -15,4 +15,4 @@ spring:
     prefix : classpath:/templates/
     suffix : .html
 
-
+file.dir: /Users/hwangdaeseon/Project/toy/src/main/resources/static/files/
