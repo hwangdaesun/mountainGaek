@@ -2,7 +2,8 @@ package com.tosinsa.toy.web;
 
 
 import com.tosinsa.toy.SessionConst;
-import com.tosinsa.toy.domain.Member;
+import com.tosinsa.toy.domain.member.Member;
+import com.tosinsa.toy.domain.member.Role;
 import com.tosinsa.toy.service.LoginService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -65,8 +66,12 @@ public class LoginController {
         HttpSession session = request.getSession();
 
         //세션에 로그인 회원 정보 보관
-        session.setAttribute(SessionConst.LOGIN_USER, loginMember.getId());
-        log.debug("debug={}",loginMember);
+        if(loginMember.getRole() == Role.ADMINISTER){
+            session.setAttribute(SessionConst.LOGIN_ADMINISTER,loginMember);
+        }else {
+            session.setAttribute(SessionConst.LOGIN_USER, loginMember);
+        }
+
         return "redirect:/items";
     }
 
