@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/header :: header" />
+<head th:replace="fragments/header :: header">
+</head>
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
@@ -11,19 +12,27 @@
             <label th:for="name">상품명</label>
             <input type="text" th:value="${itemForm.name}" class="form-control" readonly />
         </div>
+
+        <div class="form-group">
+            <label th:for="name">상품 사진</label>
+            <img th:src="|/files/${itemForm.getStoreFileName}|" alt="item image" width="100" height="100">
+        </div>
+
         <div class="form-group">
             <label th:for="price">가격</label>
             <input type="number" th:field="*{itemForm.price}" class="form-control" readonly />
         </div>
+
         <div class="form-group">
             <label th:for="stockQuantity">수량</label>
             <input type="number" th:field="*{itemForm.stockQuantity}" class="form-control" readonly />
         </div>
 
-        <button class="w-100 btn btn-primary btn-lg"
-            onclick="location.href='orderForm.html'"
-            th:onclick="|location.href='@{/order/{itemId}(itemId=${itemForm.id})}'|"
-            type="button">상품 주문하기</button>
+
+<!--        <button class="w-100 btn btn-primary btn-lg"-->
+<!--            onclick="location.href='orderForm.html'"-->
+<!--            th:onclick="|location.href='@{/order/{itemId}(itemId=${itemForm.itemId})}'|"-->
+<!--            type="button">상품 수정하기</button>-->
 
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
