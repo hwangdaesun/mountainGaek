@@ -1,10 +1,7 @@
-package com.tosinsa.toy.domain;
+package com.tosinsa.toy.domain.item;
 
 import com.tosinsa.toy.exception.NotEnoughStockException;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 
@@ -21,6 +18,10 @@ public class Item {
     private int price;
     private int stockQuantity;
 
+    private String storeFileName;
+    private String uploadFileName;
+
+
     //==비즈니스 로직==//
     public void addStock(int quantity) {
         this.stockQuantity += quantity;
@@ -35,17 +36,21 @@ public class Item {
     }
 
     @Builder
-    public Item(String name, int price, int stockQuantity){
+    public Item(String name, int price, int stockQuantity,String storeFileName, String uploadFileName){
         this.name = name;
         this.price = price;
         this.stockQuantity = stockQuantity;
+        this.storeFileName = storeFileName;
+        this.uploadFileName = uploadFileName;
     }
 
-    public static Item createItem(String name, int price, int stockQuantity){
+    public static Item createItem(String name, int price, int stockQuantity, String storeFileName, String uploadFileName){
         Item item = Item.builder()
                 .name(name)
                 .price(price)
                 .stockQuantity(stockQuantity)
+                .storeFileName(storeFileName)
+                .uploadFileName(uploadFileName)
                 .build();
         return item;
     }
@@ -55,4 +60,5 @@ public class Item {
         this.price = price;
         this.stockQuantity = stockQuantity;
     }
+
 }
