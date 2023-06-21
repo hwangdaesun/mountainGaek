@@ -1,5 +1,6 @@
-package com.tosinsa.toy.domain;
+package com.tosinsa.toy.domain.member;
 
+import com.tosinsa.toy.domain.order.Order;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -30,23 +31,28 @@ public class Member {
     @Column(name = "member_name")
     private String name;
 
+    @Enumerated
+    private Role role;
+
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
     @Builder
-    public Member(String email, String loginId, String password, String name){
+    public Member(String email, String loginId, String password, String name, Role role){
         this.email = email;
         this.loginId = loginId;
         this.password = password;
         this.name = name;
+        this.role = role;
     }
 
-    public static Member createMember(String email, String mId, String password, String name){
+    public static Member createMember(String email, String mId, String password, String name, Role role){
         Member member = Member.builder()
                 .email(email)
                 .loginId(mId)
                 .password(password)
                 .name(name)
+                .role(role)
                 .build();
         return member;
     }
