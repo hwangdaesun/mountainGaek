@@ -1,19 +1,20 @@
 package com.tosinsa.toy.web;
 
-import com.tosinsa.toy.domain.Item;
+import com.tosinsa.toy.domain.item.Item;
 import com.tosinsa.toy.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 @Controller
@@ -30,14 +31,12 @@ public class ItemController {
     }
 
     @PostMapping("/items")
-    public String create(@Validated @ModelAttribute ItemForm itemForm, BindingResult bindingResult, RedirectAttributes redirectAttributes){
-
+    public String create(@Validated @ModelAttribute ItemForm itemForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, MultipartFile multipartFile) throws Exception{
         if (bindingResult.hasErrors()) {
             log.info("errors={} ", bindingResult);
             return "items/addItemForm";
         }
-
-        Long itemId = itemService.saveItem(itemForm);
+        Long itemId = itemService.saveItem(itemForm,multipartFile);
         redirectAttributes.addAttribute("itemId",itemId);
         return "redirect:/items/{itemId}";
     }
@@ -57,6 +56,8 @@ public class ItemController {
         itemForm.setName(item.getName());
         itemForm.setPrice(item.getPrice());
         itemForm.setStockQuantity(item.getStockQuantity());
+        itemForm.setStoreFileName(item.getStoreFileName());
+        System.out.println(item.getStoreFileName());
         model.addAttribute("itemForm", itemForm);
         return "items/item";
     }
@@ -67,4 +68,13 @@ public class ItemController {
         item.updateItem(form.getName(), form.getPrice(), form.getStockQuantity());
         return "redirect:/items";
     }
+
+    @ResponseBody
+    @GetMapping("/files/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        // file:/User/.../file/1230-31421-324-3124.png
+        return new UrlResource("file:" + itemService.getStoreFileName(filename));
+    }
+
+
 }
