@@ -1,8 +1,8 @@
 package com.tosinsa.toy.service;
 
 
-import com.tosinsa.toy.domain.Member;
-import com.tosinsa.toy.domain.MemberRepository;
+import com.tosinsa.toy.domain.member.Member;
+import com.tosinsa.toy.domain.member.MemberRepository;
 import com.tosinsa.toy.web.LoginForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

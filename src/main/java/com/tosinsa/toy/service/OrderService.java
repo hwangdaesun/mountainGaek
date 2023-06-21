@@ -1,13 +1,13 @@
 package com.tosinsa.toy.service;
 
-import com.tosinsa.toy.domain.Item;
-import com.tosinsa.toy.domain.Member;
-import com.tosinsa.toy.domain.Order;
+import com.tosinsa.toy.domain.item.Item;
+import com.tosinsa.toy.domain.member.Member;
+import com.tosinsa.toy.domain.order.Order;
 import com.tosinsa.toy.domain.OrderItem;
-import com.tosinsa.toy.domain.ItemRepository;
-import com.tosinsa.toy.domain.OrderRepository;
+import com.tosinsa.toy.domain.item.ItemRepository;
+import com.tosinsa.toy.domain.order.OrderRepository;
 import com.tosinsa.toy.domain.OrderSearch;
-import com.tosinsa.toy.domain.MemberRepository;
+import com.tosinsa.toy.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

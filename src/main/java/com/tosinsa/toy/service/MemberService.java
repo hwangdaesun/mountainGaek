@@ -1,8 +1,8 @@
 package com.tosinsa.toy.service;
 
-import com.tosinsa.toy.domain.Member;
-import com.tosinsa.toy.domain.MemberRepository;
-import com.tosinsa.toy.mapper.MemberMapper;
+import com.tosinsa.toy.domain.member.Member;
+import com.tosinsa.toy.domain.member.MemberRepository;
+import com.tosinsa.toy.domain.member.Role;
 import com.tosinsa.toy.web.MemberForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +19,6 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final MemberMapper memberMapper;
 
     /**
      * 회원 가입 ==============> 이후 회원이 이미 존재할 경우 코드 구현할 예정
@@ -27,7 +26,14 @@ public class MemberService {
     @Transactional
     public void join(MemberForm memberForm) {
         validateDuplicateUser(memberForm);
-        Member member = memberMapper.memberFormToMember(memberForm);
+        Member member = new Member(memberForm.getEmail(),memberForm.getLoginId(),memberForm.getPassword(),memberForm.getName(),Role.USER);
+        memberRepository.save(member);
+    }
+
+    @Transactional
+    public void specialJoin(MemberForm memberForm) {
+        validateDuplicateUser(memberForm);
+        Member member = new Member(memberForm.getEmail(),memberForm.getLoginId(),memberForm.getPassword(),memberForm.getName(),Role.ADMINISTER);
         memberRepository.save(member);
     }
 
